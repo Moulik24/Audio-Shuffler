@@ -1,12 +1,12 @@
 from unittest import TestCase
 
-from main import get_all_sounds
+from main import get_all_sounds, convert_files_to_audio_segments
 
 
 class Test(TestCase):
     def test_get_all_sounds_from_test_directory(self):
         all_sounds = get_all_sounds('test_sound_files')
-        self.assertTrue(len(all_sounds) == 10)
+        self.assertTrue(len(all_sounds) == 12)
 
     def test_get_all_sounds_from_current_directory(self):
         try:
@@ -20,3 +20,17 @@ class Test(TestCase):
         except:
             assert False
 
+    def test_convert_files_to_audio_segments_happy_path(self):
+        all_audio_files = ["test_sound_files/Clubs/3_C.m4a", "test_sound_files/Spades/5_S.m4a", "test_sound_files/Hearts/5_H.m4a"]
+        shuffled_audio_segments = convert_files_to_audio_segments(all_audio_files)
+        self.assertTrue(len(shuffled_audio_segments) == 3)
+
+    def test_convert_files_to_audio_segments_non_existent_files(self):
+        non_existent_files = ["file_that_does_not_exist.wav"]
+        shuffled_audio_segments = convert_files_to_audio_segments(non_existent_files)
+        self.assertTrue(len(shuffled_audio_segments) == 0)
+
+    def test_convert_files_to_audio_segments_non_existent_files(self):
+        non_audio_files = ["test_sound_files/NonAudioFiles/non_audio_file.txt", "test_sound_files/NonAudioFiles/non_audio_file_no_ext"]
+        shuffled_audio_segments = convert_files_to_audio_segments(non_audio_files)
+        self.assertTrue(len(shuffled_audio_segments) == 0)
