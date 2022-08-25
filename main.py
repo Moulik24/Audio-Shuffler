@@ -6,18 +6,18 @@ from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
 
 
-def get_all_sounds(root_dir):
+def get_all_file_paths(root_dir):
     if root_dir is None:
         root_dir = os.curdir
 
-    all_sounds = []
+    all_paths = []
     for (_, _, files) in os.walk(root_dir):
-        all_sounds.extend(files)
-    return all_sounds
+        all_paths.extend(files)
+    return all_paths
 
 
-def shuffle_sounds(all_sounds):
-    random.shuffle(all_sounds)
+def shuffle_file_paths(all_paths):
+    random.shuffle(all_paths)
 
 
 def convert_files_to_audio_segments(shuffled_file_paths):
@@ -45,5 +45,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--audio', help='root directory of the audio files')
     args = parser.parse_args()
-    all_sounds = get_all_sounds(args.audio)
-    shuffle_sounds(all_sounds)
+    all_file_paths = get_all_file_paths(args.audio)
+    shuffle_file_paths(all_file_paths)

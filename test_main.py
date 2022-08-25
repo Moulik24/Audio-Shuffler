@@ -1,22 +1,22 @@
 from unittest import TestCase
 
-from main import get_all_sounds, convert_files_to_audio_segments
+from main import get_all_file_paths, convert_files_to_audio_segments
 
 
 class Test(TestCase):
-    def test_get_all_sounds_from_test_directory(self):
-        all_sounds = get_all_sounds('test_sound_files')
+    def test_get_all_file_paths_from_test_directory(self):
+        all_sounds = get_all_file_paths('test_sound_files')
         self.assertTrue(len(all_sounds) == 12)
 
-    def test_get_all_sounds_from_current_directory(self):
+    def test_get_all_file_paths_from_current_directory(self):
         try:
-            all_sounds = get_all_sounds(".")
+            all_file_paths = get_all_file_paths(".")
         except:
             assert False
 
-    def test_get_all_sounds_no_directory_specified(self):
+    def test_get_all_file_paths_no_directory_specified(self):
         try:
-            all_sounds = get_all_sounds(None)
+            all_file_paths = get_all_file_paths(None)
         except:
             assert False
 
