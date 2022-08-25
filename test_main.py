@@ -25,8 +25,13 @@ class Test(TestCase):
         shuffled_audio_segments = convert_files_to_audio_segments(all_audio_files)
         self.assertTrue(len(shuffled_audio_segments) == 3)
 
-    def test_convert_files_to_audio_segments_non_existent_files(self):
+    def test_convert_files_to_audio_segments_non_existent_but_valid_sound_file(self):
         non_existent_files = ["file_that_does_not_exist.wav"]
+        shuffled_audio_segments = convert_files_to_audio_segments(non_existent_files)
+        self.assertTrue(len(shuffled_audio_segments) == 0)
+
+    def test_convert_files_to_audio_segments_non_existent_and_not_valid_sound_file(self):
+        non_existent_files = ["file_that_does_not_exist.txt"]
         shuffled_audio_segments = convert_files_to_audio_segments(non_existent_files)
         self.assertTrue(len(shuffled_audio_segments) == 0)
 
