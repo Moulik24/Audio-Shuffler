@@ -22,12 +22,15 @@ def shuffle_file_paths(all_paths):
 
 def convert_files_to_audio_segments(shuffled_file_paths):
     shuffled_audio_segments = []
+    error_file_paths = []
     for file_path in shuffled_file_paths:
         audio_segment = to_audio_segment(file_path)
         if audio_segment:
             shuffled_audio_segments.append(audio_segment)
+        else:
+            error_file_paths.append(file_path)
 
-    return shuffled_audio_segments
+    return shuffled_audio_segments, error_file_paths
 
 
 def to_audio_segment(file_path):
@@ -38,8 +41,8 @@ def to_audio_segment(file_path):
         return None
     except CouldntDecodeError:
         return None
-    # TODO: In error cases, add file name to a logger file that has a list of files that couldn't be processed
-
+    except IndexError:
+        return None
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -47,3 +50,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     all_file_paths = get_all_file_paths(args.audio)
     shuffle_file_paths(all_file_paths)
+    shuffled_audio, error_files = convert_files_to_audio_segments(all_file_paths)
+    with open("log_error_files.txt", "w") as log:
+        for error_file in error_files:
+            log.write(error_file + '\n')
