@@ -1,6 +1,8 @@
 from unittest import TestCase
 
-from main import get_all_file_paths, convert_files_to_audio_segments
+from pydub import AudioSegment
+
+from main import get_all_file_paths, convert_files_to_audio_segments, merge_audio_segments
 
 
 class Test(TestCase):
@@ -54,3 +56,10 @@ class Test(TestCase):
         self.assertTrue(len(shuffled_audio) == 1)
         self.assertTrue(success_files == ["test_sound_files/Clubs/3_C.m4a"])
         self.assertTrue(error_files == ["test_sound_files/NonAudioFiles/non_audio_file.txt"])
+
+    def test_merge_audio_segments(self):
+        audio_segments = [AudioSegment.from_file("test_sound_files/Spades/5_S.m4a"), AudioSegment.from_file("test_sound_files/Clubs/3_C.m4a")]
+        merged_audio = merge_audio_segments(audio_segments)
+        merged_audio_duration_actual = len(merged_audio)
+        merged_audio_duration_expected = len(audio_segments[0]) + len(audio_segments[1])
+        self.assertEqual(merged_audio_duration_expected, merged_audio_duration_actual)
