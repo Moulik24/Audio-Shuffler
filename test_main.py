@@ -6,7 +6,7 @@ from main import get_all_file_paths, convert_files_to_audio_segments
 class Test(TestCase):
     def test_get_all_file_paths_from_test_directory(self):
         all_sounds = get_all_file_paths('test_sound_files')
-        self.assertTrue(len(all_sounds) == 12)
+        self.assertTrue(all_sounds == ['test_sound_files\\Clubs\\3_C.m4a', 'test_sound_files\\Clubs\\7_C.m4a', 'test_sound_files\\Clubs\\K_C.m4a', 'test_sound_files\\Diamonds\\5_D.m4a', 'test_sound_files\\Hearts\\5_H.m4a', 'test_sound_files\\Hearts\\6_H.m4a', 'test_sound_files\\Hearts\\A_H.m4a', 'test_sound_files\\Hearts\\J_H.m4a', 'test_sound_files\\NonAudioFiles\\non_audio_file.txt', 'test_sound_files\\NonAudioFiles\\non_audio_file_no_ext', 'test_sound_files\\Spades\\5_S.m4a', 'test_sound_files\\Spades\\8_S.m4a'])
 
     def test_get_all_file_paths_from_current_directory(self):
         try:

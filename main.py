@@ -11,8 +11,8 @@ def get_all_file_paths(root_dir):
         root_dir = os.curdir
 
     all_paths = []
-    for (_, _, files) in os.walk(root_dir):
-        all_paths.extend(files)
+    for (dir_path, _, files) in os.walk(root_dir):
+        all_paths.extend(os.path.join(dir_path, file_name) for file_name in files)
     return all_paths
 
 
