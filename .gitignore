@@ -3,3 +3,5 @@ venv/
 
 log_success_files.txt
 log_error_files.txt
+
+output.wav
