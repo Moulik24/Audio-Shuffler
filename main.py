@@ -54,6 +54,11 @@ def merge_audio_segments(audio_segments):
     return merged
 
 
+def export_to_audio_file(audio_segment, new_file_path):
+    new_file = audio_segment.export(new_file_path)
+    new_file.close()
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--audio', help='root directory of the audio files')
@@ -66,3 +71,5 @@ if __name__ == '__main__':
             log_error.write(error_file + '\n')
         for success_file in success_files:
             log_success.write(success_file + '\n')
+    merged_audio = merge_audio_segments(shuffled_audio)
+    export_to_audio_file(merged_audio)

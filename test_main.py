@@ -1,8 +1,9 @@
+import os
 from unittest import TestCase
 
 from pydub import AudioSegment
 
-from main import get_all_file_paths, convert_files_to_audio_segments, merge_audio_segments
+from main import get_all_file_paths, convert_files_to_audio_segments, merge_audio_segments, export_to_audio_file
 
 
 class Test(TestCase):
@@ -63,3 +64,14 @@ class Test(TestCase):
         merged_audio_duration_actual = len(merged_audio)
         merged_audio_duration_expected = len(audio_segments[0]) + len(audio_segments[1])
         self.assertEqual(merged_audio_duration_expected, merged_audio_duration_actual)
+
+    def test_export_to_audio_file(self):
+        audio_segment = AudioSegment.from_file("test_sound_files/Spades/5_S.m4a")
+        path_to_new_file = "output.wav"
+        export_to_audio_file(audio_segment, path_to_new_file)
+        self.assertTrue(os.path.exists(path_to_new_file))
+
+        audio_segment_from_new_file = AudioSegment.from_file(path_to_new_file)
+        self.assertEqual(len(audio_segment), len(audio_segment_from_new_file))
+
+        os.remove(path_to_new_file)
