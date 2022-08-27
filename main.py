@@ -47,6 +47,13 @@ def to_audio_segment(file_path):
         return None
 
 
+def merge_audio_segments(audio_segments):
+    merged = AudioSegment.empty()
+    for segment in audio_segments:
+        merged += segment
+    return merged
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--audio', help='root directory of the audio files')
