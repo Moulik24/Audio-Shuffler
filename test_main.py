@@ -3,7 +3,8 @@ from unittest import TestCase
 
 from pydub import AudioSegment
 
-from main import get_all_file_paths, convert_files_to_audio_segments, merge_audio_segments, export_to_audio_file
+from main import get_all_file_paths, convert_files_to_audio_segments, merge_audio_segments, export_to_audio_file, \
+    insert_pauses
 
 
 class Test(TestCase):
@@ -58,6 +59,58 @@ class Test(TestCase):
         self.assertTrue(success_files == ["test_sound_files/Clubs/3_C.m4a"])
         self.assertTrue(error_files == ["test_sound_files/NonAudioFiles/non_audio_file.txt"])
 
+    def test_insert_pauses_zero_pause_length(self):
+        audio_segments = [AudioSegment.from_file("test_sound_files/Spades/5_S.m4a"),
+                          AudioSegment.from_file("test_sound_files/Clubs/3_C.m4a"),
+                          AudioSegment.from_file("test_sound_files/Hearts/A_H.m4a")]
+        audio_segments_original = audio_segments.copy()
+
+        no_pause_duration = 0
+        insert_pauses(audio_segments, no_pause_duration)
+
+        self.assertEqual(audio_segments_original, audio_segments)
+
+    def test_insert_pauses_one_audio_only(self):
+        one_audio_segment = [AudioSegment.from_file("test_sound_files/Spades/5_S.m4a")]
+        one_audio_segment_original = one_audio_segment.copy()
+
+        pause_duration = 2
+        insert_pauses(one_audio_segment,pause_duration)
+
+        self.assertEqual(one_audio_segment_original, one_audio_segment)
+
+    def test_insert_pauses_with_pause_odd_length(self):
+        audio_segments = [AudioSegment.from_file("test_sound_files/Spades/5_S.m4a"),
+                          AudioSegment.from_file("test_sound_files/Clubs/3_C.m4a"),
+                          AudioSegment.from_file("test_sound_files/Hearts/A_H.m4a")]
+
+        pause_length_in_seconds = 2
+        audio_segments_with_pauses_actual = insert_pauses(audio_segments, pause_length_in_seconds)
+
+        pause_length_in_milliseconds = pause_length_in_seconds*1000
+        pause = AudioSegment.silent(duration=pause_length_in_milliseconds)
+        audio_segments_with_pauses_expected = [AudioSegment.from_file("test_sound_files/Spades/5_S.m4a"),
+                                               pause,
+                                               AudioSegment.from_file("test_sound_files/Clubs/3_C.m4a"),
+                                               pause,
+                                               AudioSegment.from_file("test_sound_files/Hearts/A_H.m4a")]
+
+        self.assertEqual(audio_segments_with_pauses_expected, audio_segments_with_pauses_actual)
+
+    def test_insert_pauses_with_pause_even_length(self):
+        audio_segments = [AudioSegment.from_file("test_sound_files/Spades/5_S.m4a"),
+                          AudioSegment.from_file("test_sound_files/Clubs/3_C.m4a")]
+        pause_length_in_seconds = 2
+        audio_segments_with_pauses_actual = insert_pauses(audio_segments, pause_length_in_seconds)
+
+        pause_length_in_milliseconds = pause_length_in_seconds * 1000
+        pause = AudioSegment.silent(duration=pause_length_in_milliseconds)
+        audio_segments_with_pauses_expected = [AudioSegment.from_file("test_sound_files/Spades/5_S.m4a"),
+                                               pause,
+                                               AudioSegment.from_file("test_sound_files/Clubs/3_C.m4a")]
+
+        self.assertEqual(audio_segments_with_pauses_expected, audio_segments_with_pauses_actual)
+
     def test_merge_audio_segments(self):
         audio_segments = [AudioSegment.from_file("test_sound_files/Spades/5_S.m4a"), AudioSegment.from_file("test_sound_files/Clubs/3_C.m4a")]
         merged_audio = merge_audio_segments(audio_segments)
@@ -75,3 +128,5 @@ class Test(TestCase):
         self.assertEqual(len(audio_segment), len(audio_segment_from_new_file))
 
         os.remove(path_to_new_file)
+
+#def compare_audio_segment_lists(audio_segments_expected,audio_segments_actual):

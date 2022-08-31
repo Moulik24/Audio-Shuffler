@@ -47,6 +47,26 @@ def to_audio_segment(file_path):
         return None
 
 
+def insert_pauses(audio_segments, pause_length_seconds):
+    """
+    Given list of audiosegments [a,b,c] for example, convert list to [a,pause,b,pause,c]
+    List stays the same if pause_length_seconds is 0 or audio_segments is of length 0 or 1, i.e. no pauses inserted
+    """
+    if pause_length_seconds == 0:
+        return audio_segments
+    if len(audio_segments) == 0 or len(audio_segments) == 1:
+        return audio_segments
+
+    pause_length_milliseconds = pause_length_seconds*1000
+    pause = AudioSegment.silent(duration=pause_length_milliseconds)
+
+    index = 1
+    while index < len(audio_segments):
+        audio_segments.insert(index, pause)
+        index += 2
+    return audio_segments
+
+
 def merge_audio_segments(audio_segments):
     merged = AudioSegment.empty()
     for segment in audio_segments:
