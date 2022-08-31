@@ -83,6 +83,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--audio', help='root directory of the audio files')
     parser.add_argument('--output', help='path to output file, made up of shuffled audio files')
+    parser.add_argument('--pause', type=int, help='integer, duration in seconds of pause between audio files')
     args = parser.parse_args()
     all_file_paths = get_all_file_paths(args.audio)
     shuffle_file_paths(all_file_paths)
@@ -92,6 +93,7 @@ if __name__ == '__main__':
             log_error.write(error_file + '\n')
         for success_file in success_files:
             log_success.write(success_file + '\n')
+    insert_pauses(shuffled_audio, args.pause)
     merged_audio = merge_audio_segments(shuffled_audio)
     output_file_path = args.output
     export_to_audio_file(merged_audio, output_file_path)
