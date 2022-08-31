@@ -128,5 +128,3 @@ class Test(TestCase):
         self.assertEqual(len(audio_segment), len(audio_segment_from_new_file))
 
         os.remove(path_to_new_file)
-
-#def compare_audio_segment_lists(audio_segments_expected,audio_segments_actual):

@@ -85,6 +85,7 @@ if __name__ == '__main__':
     parser.add_argument('--output', help='path to output file, made up of shuffled audio files')
     parser.add_argument('--pause', type=int, help='integer, duration in seconds of pause between audio files')
     args = parser.parse_args()
+    
     all_file_paths = get_all_file_paths(args.audio)
     shuffle_file_paths(all_file_paths)
     shuffled_audio, success_files, error_files = convert_files_to_audio_segments(all_file_paths)
