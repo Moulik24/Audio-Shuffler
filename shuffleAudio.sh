@@ -1,4 +1,5 @@
 #!/bin/bash
 audioRootDir=test_sound_files
 outputFilePath=output.wav
-python main.py --audio $audioRootDir --output $outputFilePath
+pauseDuration=2
+python main.py --audio $audioRootDir --output $outputFilePath --pause $pauseDuration

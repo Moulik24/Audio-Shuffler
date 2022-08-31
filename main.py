@@ -47,6 +47,26 @@ def to_audio_segment(file_path):
         return None
 
 
+def insert_pauses(audio_segments, pause_length_seconds):
+    """
+    Given list of audiosegments [a,b,c] for example, convert list to [a,pause,b,pause,c]
+    List stays the same if pause_length_seconds is 0 or audio_segments is of length 0 or 1, i.e. no pauses inserted
+    """
+    if pause_length_seconds == 0:
+        return audio_segments
+    if len(audio_segments) == 0 or len(audio_segments) == 1:
+        return audio_segments
+
+    pause_length_milliseconds = pause_length_seconds*1000
+    pause = AudioSegment.silent(duration=pause_length_milliseconds)
+
+    index = 1
+    while index < len(audio_segments):
+        audio_segments.insert(index, pause)
+        index += 2
+    return audio_segments
+
+
 def merge_audio_segments(audio_segments):
     merged = AudioSegment.empty()
     for segment in audio_segments:
@@ -63,7 +83,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--audio', help='root directory of the audio files')
     parser.add_argument('--output', help='path to output file, made up of shuffled audio files')
+    parser.add_argument('--pause', type=int, help='integer, duration in seconds of pause between audio files')
     args = parser.parse_args()
+    
     all_file_paths = get_all_file_paths(args.audio)
     shuffle_file_paths(all_file_paths)
     shuffled_audio, success_files, error_files = convert_files_to_audio_segments(all_file_paths)
@@ -72,6 +94,7 @@ if __name__ == '__main__':
             log_error.write(error_file + '\n')
         for success_file in success_files:
             log_success.write(success_file + '\n')
+    insert_pauses(shuffled_audio, args.pause)
     merged_audio = merge_audio_segments(shuffled_audio)
     output_file_path = args.output
     export_to_audio_file(merged_audio, output_file_path)
