@@ -9,13 +9,13 @@ The script can also be used for just creating a shuffled playlist of sound files
 you can run the script on your home directory for example, and if there are some audio files in the depths of your file system, 
 the script will shuffle them and present you with a shuffled-merged recording of them.
 
-#Setup
+## Setup
 You can clone the entire project or just download the main.py script and shuffleAudio.sh, but will also need Pydub. 
 You can find their installation instructions here: https://github.com/jiaaro/pydub#:~:text=eye%20on%20both.-,Installation,-Installing%20pydub%20is
 
 I also followed https://www.youtube.com/watch?v=d2Y0lGrRoMI&t=604s&ab_channel=NilegProduction for windows installation.
 
-#Run the script + more features
+## Run the script + more features
 The shuffleAudio.sh file is meant to make running the script easy.
 
 In shuffleAudio.sh, set the audioRootDir to the path of the root directory of the audio files that you want to shuffle.
